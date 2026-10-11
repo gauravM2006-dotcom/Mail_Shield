@@ -1,0 +1,230 @@
+{% extends "base_app.html" %}
+
+{% block title %}Rules Engine — Mail Shield{% endblock %}
+{% block header_title %}Detection Rules & Thresholds{% endblock %}
+{% block header_subtitle %}Tune point weights, keywords, allow/block lists, and test in real time.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <!-- Top Action Bar -->
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-2 border-bottom">
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold">
+        <i class="bi bi-sliders me-1"></i> Deterministic Engine v1.0
+      </span>
+      <span class="text-muted small" id="threshold-zone-display">Safe: 0–29 · Suspicious: 30–59 · Spam: 60–100</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <button type="button" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" id="btn-reset-rules">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        <span>Reset Defaults</span>
+      </button>
+      <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm" id="btn-save-rules">
+        <i class="bi bi-check2-circle"></i>
+        <span>Save Changes</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- 1. Threshold Calibration -->
+    <div class="col-12">
+      <div class="ms-card p-4 border">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h5 class="fw-bold mb-1" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+              <i class="bi bi-speedometer2 text-primary me-2"></i> Threat Score Thresholds
+            </h5>
+            <p class="text-muted small mb-0">Emails scoring below suspicious are deemed Safe. Scores exceeding the Spam threshold are flagged for immediate action.</p>
+          </div>
+        </div>
+
+        <div class="row g-4 pt-2">
+          <!-- Suspicious Threshold -->
+          <div class="col-md-6">
+            <div class="p-3 border rounded-3 bg-light">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold mb-0 text-warning" for="th-suspicious">
+                  <i class="bi bi-exclamation-triangle-fill me-1"></i> Suspicious Threshold
+                </label>
+                <div class="input-group input-group-sm" style="width: 80px;">
+                  <input type="number" class="form-control text-center fw-bold" id="th-suspicious" min="1" max="99" value="30">
+                </div>
+              </div>
+              <input type="range" class="form-range" id="th-suspicious-range" min="1" max="99" value="30">
+              <div class="d-flex justify-content-between text-muted small" style="font-size: 11px;">
+                <span>0 (Sensitive)</span>
+                <span>Trigger at <span class="fw-bold text-dark" id="scale-mark-susp">30</span> pts</span>
+                <span>100 (Lenient)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spam Threshold -->
+          <div class="col-md-6">
+            <div class="p-3 border rounded-3 bg-light">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold mb-0 text-danger" for="th-spam">
+                  <i class="bi bi-shield-x me-1"></i> Spam Threshold
+                </label>
+                <div class="input-group input-group-sm" style="width: 80px;">
+                  <input type="number" class="form-control text-center fw-bold" id="th-spam" min="1" max="99" value="60">
+                </div>
+              </div>
+              <input type="range" class="form-range" id="th-spam-range" min="1" max="99" value="60">
+              <div class="d-flex justify-content-between text-muted small" style="font-size: 11px;">
+                <span>0 (Sensitive)</span>
+                <span>Trigger at <span class="fw-bold text-dark" id="scale-mark-spam">60</span> pts</span>
+                <span>100 (Lenient)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Keyword Categories & Weights -->
+    <div class="col-lg-7">
+      <div class="ms-card p-4 border h-100">
+        <h5 class="fw-bold mb-2" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-tags text-primary me-2"></i> Keyword Categories &amp; Weights
+        </h5>
+        <p class="text-muted small mb-3">Select a category on the left to review, disable, or append custom trigger phrases.</p>
+
+        <div class="row g-3">
+          <!-- Category List -->
+          <div class="col-md-5">
+            <div class="list-group list-group-flush border rounded-3 p-1 bg-white" id="kw-categories-list" style="max-height: 380px; overflow-y: auto;">
+              <!-- Filled dynamically by rules.js -->
+            </div>
+          </div>
+
+          <!-- Category Keywords & Chips -->
+          <div class="col-md-7">
+            <div class="p-3 border rounded-3 bg-light h-100 d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0 text-truncate" id="selected-cat-title">Keywords</h6>
+                <span class="badge bg-primary rounded-pill small" id="selected-cat-weight">+0 pts</span>
+              </div>
+
+              <!-- Input to add keyword -->
+              <div class="input-group input-group-sm mb-3">
+                <input type="text" class="form-control" id="input-add-keyword" placeholder="Add keyword or phrase...">
+                <button class="btn btn-primary" type="button" id="btn-add-keyword">
+                  <i class="bi bi-plus-lg"></i> Add
+                </button>
+              </div>
+
+              <!-- Chips Container -->
+              <div class="flex-grow-1 overflow-auto d-flex flex-wrap gap-2 align-content-start p-2 bg-white rounded border" id="kw-chips-container" style="min-height: 200px; max-height: 280px;">
+                <!-- Populated via rules.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Sender Lists (Allow & Block) -->
+    <div class="col-lg-5">
+      <div class="d-flex flex-column gap-4 h-100">
+        <!-- Allow List -->
+        <div class="ms-card p-4 border flex-grow-1">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="fw-bold mb-0 text-success" style="font-family: var(--ms-font-heading);">
+              <i class="bi bi-check-circle-fill me-1"></i> Allow List (Trusted Senders)
+            </h6>
+          </div>
+          <p class="text-muted small mb-3">Emails from these exact addresses or domains bypass normal scoring.</p>
+          <div class="input-group input-group-sm mb-3">
+            <input type="email" class="form-control" id="input-add-allow" placeholder="trusted@company.com">
+            <button class="btn btn-outline-success" type="button" id="btn-add-allow">
+              <i class="bi bi-plus-lg"></i> Allow
+            </button>
+          </div>
+          <div class="d-flex flex-wrap gap-2 p-2 bg-light rounded border" id="allow-senders-chips" style="min-height: 70px; max-height: 120px; overflow-y: auto;">
+            <!-- Populated via rules.js -->
+          </div>
+        </div>
+
+        <!-- Block List -->
+        <div class="ms-card p-4 border flex-grow-1">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="fw-bold mb-0 text-danger" style="font-family: var(--ms-font-heading);">
+              <i class="bi bi-slash-circle-fill me-1"></i> Block List (Blocked Senders)
+            </h6>
+          </div>
+          <p class="text-muted small mb-3">Emails from these senders immediately receive a score of 100.</p>
+          <div class="input-group input-group-sm mb-3">
+            <input type="email" class="form-control" id="input-add-block" placeholder="spammer@badsource.com">
+            <button class="btn btn-outline-danger" type="button" id="btn-add-block">
+              <i class="bi bi-plus-lg"></i> Block
+            </button>
+          </div>
+          <div class="d-flex flex-wrap gap-2 p-2 bg-light rounded border" id="block-senders-chips" style="min-height: 70px; max-height: 120px; overflow-y: auto;">
+            <!-- Populated via rules.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Rule Sandbox Testing Panel -->
+    <div class="col-12">
+      <div class="ms-card p-4 border">
+        <h5 class="fw-bold mb-2" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-terminal text-primary me-2"></i> Live Rule Sandbox
+        </h5>
+        <p class="text-muted small mb-3">Test hypothetical email snippets instantly against your active rule configuration.</p>
+
+        <div class="row g-3">
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold" for="sandbox-subject">Test Subject Line</label>
+              <input type="text" class="form-control form-control-sm" id="sandbox-subject" placeholder="e.g. URGENT: Verify your payroll credentials">
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold" for="sandbox-body">Test Email Body Text</label>
+              <textarea class="form-control form-control-sm" id="sandbox-body" rows="4" placeholder="e.g. Please click the link to confirm your login immediately or your account will be suspended."></textarea>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-2" id="btn-run-sandbox">
+              <i class="bi bi-play-circle"></i>
+              <span>Evaluate in Sandbox</span>
+            </button>
+          </div>
+
+          <div class="col-md-7">
+            <label class="form-label small fw-semibold">Sandbox Result Output</label>
+            <div class="border rounded-3 p-3 bg-light d-none" id="sandbox-output" style="min-height: 180px;">
+              <!-- Populated via rules.js runSandboxTest() -->
+            </div>
+            <div class="border rounded-3 p-4 bg-light text-center text-muted small" id="sandbox-placeholder">
+              <i class="bi bi-flask fs-3 d-block mb-2 text-secondary"></i>
+              Enter subject &amp; body text on the left, then click <strong>Evaluate in Sandbox</strong> to inspect point contributions and rule triggers.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initRules } from "/static/js/rules.js";
+  initRules();
+
+  // Hide placeholder when sandbox output is displayed
+  const observer = new MutationObserver(() => {
+    const out = document.getElementById("sandbox-output");
+    const ph = document.getElementById("sandbox-placeholder");
+    if (out && ph) {
+      if (!out.classList.contains("d-none")) {
+        ph.classList.add("d-none");
+      }
+    }
+  });
+  const target = document.getElementById("sandbox-output");
+  if (target) {
+    observer.observe(target, { attributes: true, attributeFilter: ["class"] });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,323 @@
+{% extends "base_app.html" %}
+
+{% block title %}Unified Mailbox Dashboard — Mail Shield{% endblock %}
+{% block header_title %}<span class="salutation-text">{{ salutation }}</span>, {{ current_user.display_name or 'User' }} 👋{% endblock %}
+{% block header_subtitle %}Your multi-mailbox defenses are active and synchronizing.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <!-- 1. Four Summary Stat Cards with High-Tech Polish -->
+  <div class="row g-3 mb-4">
+    <div class="col-xl-3 col-sm-6">
+      <div class="ms-stat-card border shadow-xs">
+        <div>
+          <div class="ms-stat-label">Total Messages</div>
+          <div class="ms-stat-value" id="stat-total-mails">0</div>
+          <div class="text-muted small mt-1" style="font-size: 11px;">Across 4 connected inboxes</div>
+        </div>
+        <div class="ms-stat-icon-wrapper" style="background-color: var(--ms-primary-light); color: var(--ms-primary);">
+          <i class="bi bi-inbox-fill"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+      <div class="ms-stat-card border shadow-xs">
+        <div>
+          <div class="ms-stat-label">Scanned &amp; Audited</div>
+          <div class="ms-stat-value" id="stat-scanned-mails">0</div>
+          <div class="text-muted small mt-1" style="font-size: 11px;">Evaluated via rule engine</div>
+        </div>
+        <div class="ms-stat-icon-wrapper" style="background-color: var(--ms-safe-bg); color: var(--ms-safe-text);">
+          <i class="bi bi-shield-check"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+      <div class="ms-stat-card border shadow-xs">
+        <div>
+          <div class="ms-stat-label">Suspicious Threats</div>
+          <div class="ms-stat-value" style="color: var(--ms-suspicious);" id="stat-suspicious-mails">0</div>
+          <div class="text-muted small mt-1" style="font-size: 11px;">Score threshold: 30–59 pts</div>
+        </div>
+        <div class="ms-stat-icon-wrapper" style="background-color: var(--ms-suspicious-bg); color: var(--ms-suspicious);">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+      <div class="ms-stat-card border shadow-xs">
+        <div>
+          <div class="ms-stat-label">Spam &amp; Malicious</div>
+          <div class="ms-stat-value" style="color: var(--ms-spam);" id="stat-spam-mails">0</div>
+          <div class="text-muted small mt-1" style="font-size: 11px;">High risk score &ge; 60 pts</div>
+        </div>
+        <div class="ms-stat-icon-wrapper" style="background-color: var(--ms-spam-bg); color: var(--ms-spam);">
+          <i class="bi bi-x-octagon-fill"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Connected Mailboxes Overview Section -->
+  <div class="mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div>
+        <h6 class="fw-bold mb-0" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-layers text-primary me-1"></i> Connected Mailboxes
+        </h6>
+        <div class="small text-muted">Select an inbox to view inspected emails or manage sync settings</div>
+      </div>
+      <a href="/scan-all" class="small fw-semibold text-primary d-none d-sm-inline">Run multi-mailbox scan →</a>
+    </div>
+
+    <div class="row g-3" id="connected-mailboxes-cards-row">
+      <!-- Gmail Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="ms-mailbox-card cursor-pointer {% if active_tab == 'gmail' %}active-tab{% endif %}" data-provider-card="gmail" onclick="import('/static/js/dashboard.js').then(m => m.switchTab('gmail'))">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-google text-danger fs-5"></i>
+              <strong class="small" style="color: var(--ms-navy);">Gmail</strong>
+            </div>
+            <span id="card-status-gmail" class="badge bg-secondary-subtle text-secondary border small">Checking...</span>
+          </div>
+          <div class="small text-truncate text-muted mb-1 font-monospace" id="card-address-gmail" style="font-size: 11px;">user@gmail.com</div>
+          <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top" style="font-size: 11px;">
+            <span class="text-muted" id="card-cached-gmail">0 emails</span>
+            <span class="text-primary fw-semibold">View Inbox &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outlook Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="ms-mailbox-card cursor-pointer {% if active_tab == 'outlook' %}active-tab{% endif %}" data-provider-card="outlook" onclick="import('/static/js/dashboard.js').then(m => m.switchTab('outlook'))">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-microsoft text-primary fs-5"></i>
+              <strong class="small" style="color: var(--ms-navy);">Outlook</strong>
+            </div>
+            <span id="card-status-outlook" class="badge bg-secondary-subtle text-secondary border small">Checking...</span>
+          </div>
+          <div class="small text-truncate text-muted mb-1 font-monospace" id="card-address-outlook" style="font-size: 11px;">user@outlook.com</div>
+          <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top" style="font-size: 11px;">
+            <span class="text-muted" id="card-cached-outlook">0 emails</span>
+            <span class="text-primary fw-semibold">View Inbox &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yahoo Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="ms-mailbox-card cursor-pointer {% if active_tab == 'yahoo' %}active-tab{% endif %}" data-provider-card="yahoo" onclick="import('/static/js/dashboard.js').then(m => m.switchTab('yahoo'))">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-envelope-at-fill text-warning fs-5"></i>
+              <strong class="small" style="color: var(--ms-navy);">Yahoo Mail</strong>
+            </div>
+            <span id="card-status-yahoo" class="badge bg-secondary-subtle text-secondary border small">Checking...</span>
+          </div>
+          <div class="small text-truncate text-muted mb-1 font-monospace" id="card-address-yahoo" style="font-size: 11px;">user@yahoo.com</div>
+          <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top" style="font-size: 11px;">
+            <span class="text-muted" id="card-cached-yahoo">0 emails</span>
+            <span class="text-primary fw-semibold">View Inbox &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- iCloud Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="ms-mailbox-card cursor-pointer {% if active_tab == 'icloud' %}active-tab{% endif %}" data-provider-card="icloud" onclick="import('/static/js/dashboard.js').then(m => m.switchTab('icloud'))">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-apple text-dark fs-5"></i>
+              <strong class="small" style="color: var(--ms-navy);">iCloud</strong>
+            </div>
+            <span id="card-status-icloud" class="badge bg-secondary-subtle text-secondary border small">Checking...</span>
+          </div>
+          <div class="small text-truncate text-muted mb-1 font-monospace" id="card-address-icloud" style="font-size: 11px;">user@icloud.com</div>
+          <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top" style="font-size: 11px;">
+            <span class="text-muted" id="card-cached-icloud">0 emails</span>
+            <span class="text-primary fw-semibold">View Inbox &rarr;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Recent Emails Panel (Provider Specific) -->
+  <div class="ms-card p-0 mb-4 overflow-hidden border shadow-sm">
+    <!-- Sub-Navbar Header -->
+    <div class="p-3 border-bottom d-flex flex-wrap align-items-center justify-content-between gap-3" style="background-color: var(--ms-surface);">
+      <!-- Provider Tabs Header -->
+      <div class="d-flex align-items-center gap-2">
+        <ul class="nav nav-pills gap-1" id="providerTabsNav">
+          <li class="nav-item">
+            <button class="nav-link btn-sm d-flex align-items-center gap-2 {% if active_tab == 'gmail' %}active{% endif %}" data-provider-tab="gmail">
+              <i class="bi bi-google text-danger"></i>
+              <span>Gmail</span>
+              <span class="badge rounded-pill bg-danger d-none" id="tab-badge-gmail">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn-sm d-flex align-items-center gap-2 {% if active_tab == 'outlook' %}active{% endif %}" data-provider-tab="outlook">
+              <i class="bi bi-microsoft text-primary"></i>
+              <span>Outlook</span>
+              <span class="badge rounded-pill bg-danger d-none" id="tab-badge-outlook">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn-sm d-flex align-items-center gap-2 {% if active_tab == 'yahoo' %}active{% endif %}" data-provider-tab="yahoo">
+              <i class="bi bi-envelope-at-fill text-warning"></i>
+              <span>Yahoo</span>
+              <span class="badge rounded-pill bg-danger d-none" id="tab-badge-yahoo">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn-sm d-flex align-items-center gap-2 {% if active_tab == 'icloud' %}active{% endif %}" data-provider-tab="icloud">
+              <i class="bi bi-apple text-dark"></i>
+              <span>iCloud</span>
+              <span class="badge rounded-pill bg-danger d-none" id="tab-badge-icloud">0</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quick Actions for Tab -->
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" id="btn-refresh-tab" title="Sync latest messages">
+          <i class="bi bi-arrow-clockwise"></i>
+          <span>Sync</span>
+        </button>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-label="Mailbox options">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 12px;">
+            <li><button class="dropdown-item small text-danger" id="btn-disconnect-tab"><i class="bi bi-power me-2"></i> Disconnect Mailbox</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Connected View vs Connect Empty State -->
+    <div class="p-3">
+      <!-- Connected View -->
+      <div id="tab-connected-view" class="d-none">
+        <!-- Search and Filter Bar -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <!-- Search Input -->
+            <div class="input-group input-group-sm" style="width: 260px;">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control border-start-0 ps-0" id="mail-search-input" placeholder="Search sender, subject...">
+            </div>
+
+            <!-- Verdict Filter Chips -->
+            <div class="btn-group btn-group-sm" role="group" aria-label="Filter verdicts">
+              <button class="btn btn-outline-secondary active btn-primary" data-filter-label="">All</button>
+              <button class="btn btn-outline-secondary" data-filter-label="safe">Safe</button>
+              <button class="btn btn-outline-secondary" data-filter-label="suspicious">Suspicious</button>
+              <button class="btn btn-outline-secondary" data-filter-label="spam">Spam</button>
+              <button class="btn btn-outline-secondary" data-filter-label="unscanned">Unscanned</button>
+            </div>
+          </div>
+
+          <!-- Batch Action Buttons -->
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-primary" id="btn-scan-selected" disabled>
+              <i class="bi bi-check2-square me-1"></i> Scan Selected (0)
+            </button>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                Scan Options
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 12px;">
+                <li><button class="dropdown-item small" id="btn-scan-unscanned"><i class="bi bi-play me-2"></i> Scan Unscanned Messages</button></li>
+                <li><button class="dropdown-item small" id="btn-rescan-all"><i class="bi bi-arrow-repeat me-2"></i> Re-Scan All Messages</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Emails Table -->
+        <div class="table-responsive border rounded-3" style="background-color: var(--ms-surface);">
+          <table class="ms-table mb-0">
+            <thead>
+              <tr>
+                <th style="width: 42px;"><input type="checkbox" class="form-check-input" id="select-all-checkbox" aria-label="Select all"></th>
+                <th style="width: 200px;">Sender</th>
+                <th>Subject &amp; Snippet</th>
+                <th style="width: 40px;" class="text-center" title="Attachments"><i class="bi bi-paperclip"></i></th>
+                <th style="width: 110px;">Time</th>
+                <th style="width: 160px;">Verdict &amp; Score</th>
+                <th style="width: 70px;" class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody id="email-table-body">
+              <!-- Dynamically populated via dashboard.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Disconnected / Connect Mailbox Card -->
+      <div id="tab-connect-card" class="text-center py-5">
+        <div class="d-inline-flex p-3 rounded-circle bg-primary-subtle text-primary mb-3">
+          <i class="bi bi-inbox-fill fs-2"></i>
+        </div>
+        <h4 class="fw-bold mb-2" id="connect-card-provider-title" style="color: var(--ms-navy);">Connect Mailbox</h4>
+        <p class="text-muted small mx-auto mb-4" style="max-width: 480px;">
+          Connect your account to inspect incoming emails live. Mail Shield operates with strict read-only permissions and never modifies or deletes email on your server.
+        </p>
+
+        <div class="d-inline-flex flex-column text-start gap-2 mb-4 p-3 border rounded-3 bg-light small shadow-xs" style="max-width: 420px;">
+          <div><i class="bi bi-check-circle-fill text-success me-2"></i> Read-only access to messages &amp; headers</div>
+          <div><i class="bi bi-check-circle-fill text-success me-2"></i> Live push inspection as messages arrive</div>
+          <div><i class="bi bi-check-circle-fill text-success me-2"></i> Deterministic scoring without opaque AI models</div>
+        </div>
+
+        <div>
+          <button class="btn btn-primary px-4 py-2 shadow-sm" id="btn-trigger-connect">
+            <i class="bi bi-link-45deg me-1"></i> Connect Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initDashboard, switchTab } from "/static/js/dashboard.js";
+  import { apiRequest } from "/static/js/api.js";
+  import { showToast } from "/static/js/toast.js";
+
+  const initialTab = "{{ active_tab }}";
+  initDashboard(initialTab);
+
+  // Quick connect button on empty tab
+  document.getElementById("btn-trigger-connect")?.addEventListener("click", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const provider = urlParams.get("tab") || "gmail";
+    if (provider === "gmail") {
+      window.location.href = "/api/mail/connect/google";
+      return;
+    }
+    try {
+      const res = await apiRequest(`/api/mail/connect/${provider}`, {
+        method: "POST",
+        body: { address: `demo_${provider}@example.com` }
+      });
+      if (res.ok) {
+        showToast(`Connected ${provider.toUpperCase()} mailbox!`, "success");
+        switchTab(provider);
+      }
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+  });
+</script>
+{% endblock %}

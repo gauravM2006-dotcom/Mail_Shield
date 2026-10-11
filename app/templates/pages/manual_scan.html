@@ -1,0 +1,165 @@
+{% extends "base_app.html" %}
+
+{% block title %}Manual Email Scan — Mail Shield{% endblock %}
+{% block header_title %}Manual Email Scan{% endblock %}
+{% block header_subtitle %}Check an email before you trust it.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="row g-4">
+    <!-- Input Form Column (Left on Desktop) -->
+    <div class="col-lg-7">
+      <div class="ms-card p-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pb-3 border-bottom">
+          <div>
+            <h5 class="fw-bold mb-1" style="color: var(--ms-navy);">Inspect Raw Message</h5>
+            <p class="text-muted small mb-0">Evaluate message text, headers, and links with transparent rules</p>
+          </div>
+
+          <!-- Sample Preloaders for Quick Demonstration -->
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-danger" id="btn-sample-phishing">Load Phishing</button>
+            <button type="button" class="btn btn-outline-warning" id="btn-sample-borderline">Load Suspicious</button>
+            <button type="button" class="btn btn-outline-success" id="btn-sample-safe">Load Safe</button>
+          </div>
+        </div>
+
+        <form id="manual-scan-form">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="manual-from-name">From (Display Name)</label>
+              <input type="text" class="form-control" id="manual-from-name" placeholder="e.g. PayPal Support">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="manual-from-address">From (Email Address) *</label>
+              <input type="email" class="form-control" id="manual-from-address" placeholder="e.g. service@paypa1-security.top" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="manual-reply-to">Reply-To Address (Optional)</label>
+              <input type="text" class="form-control" id="manual-reply-to" placeholder="e.g. collect@free-mail.example">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="manual-subject">Subject Line *</label>
+              <input type="text" class="form-control" id="manual-subject" placeholder="e.g. Verify your account immediately" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="manual-body">Email Content *</label>
+            <textarea class="form-control font-monospace small" id="manual-body" rows="6" placeholder="Paste the email message body here..." required></textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="manual-urls">Extracted URLs (One per line)</label>
+              <textarea class="form-control font-monospace small" id="manual-urls" rows="3" placeholder="http://203.0.113.9/login&#10;https://bit.ly/x1"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="manual-attachments">Attachment Filenames (One per line)</label>
+              <textarea class="form-control font-monospace small" id="manual-attachments" rows="3" placeholder="security_update.pdf.exe&#10;invoice.pdf"></textarea>
+            </div>
+          </div>
+
+          <!-- Auth Results Dropdowns -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <label class="form-label" for="manual-spf">SPF Authentication</label>
+              <select class="form-select form-select-sm" id="manual-spf">
+                <option value="none">Not provided (none)</option>
+                <option value="pass">Pass</option>
+                <option value="softfail">Softfail</option>
+                <option value="fail">Fail</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="manual-dkim">DKIM Signature</label>
+              <select class="form-select form-select-sm" id="manual-dkim">
+                <option value="none">Not provided (none)</option>
+                <option value="pass">Pass</option>
+                <option value="fail">Fail</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="manual-dmarc">DMARC Policy</label>
+              <select class="form-select form-select-sm" id="manual-dmarc">
+                <option value="none">Not provided (none)</option>
+                <option value="pass">Pass</option>
+                <option value="fail">Fail</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="manual-save-history" checked>
+              <label class="form-check-label small text-muted" for="manual-save-history">Save result to Scan History</label>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-clear-manual">Clear Form</button>
+              <button type="submit" class="btn btn-primary" id="btn-run-manual-scan">
+                <i class="bi bi-shield-check me-1"></i> Analyze Email
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Output Result Column (Right beside form on desktop, stacked on mobile) -->
+    <div class="col-lg-5">
+      <!-- Placeholder card before scan -->
+      <div class="ms-card p-4 text-center h-100 d-flex flex-column justify-content-center" id="manual-scan-placeholder">
+        <div class="ms-empty-icon mx-auto"><i class="bi bi-shield-check"></i></div>
+        <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">Live Threat Analysis</h5>
+        <p class="small text-muted mb-4 mx-auto" style="max-width: 340px;">
+          Fill out the form or choose a sample template on the left, then click <strong>Analyze Email</strong> to view the transparent risk score and itemized rule evidence.
+        </p>
+        <div class="p-3 rounded bg-light border text-start small text-muted mx-auto" style="max-width: 360px;">
+          <div><i class="bi bi-check2 text-success me-2"></i> Deterministic scoring (0–100)</div>
+          <div><i class="bi bi-check2 text-success me-2"></i> Explains why each rule triggered</div>
+          <div><i class="bi bi-check2 text-success me-2"></i> Safe, Suspicious, or Spam verdict</div>
+        </div>
+      </div>
+
+      <!-- Scanned Result Card -->
+      <div class="ms-card p-4 d-none" id="manual-scan-result">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
+          <div>
+            <span class="small text-muted text-uppercase fw-semibold">Audit Result</span>
+            <h4 class="fw-bold mb-0" id="manual-res-score" style="color: var(--ms-navy);">0 / 100</h4>
+          </div>
+          <div>
+            <span class="fs-6" id="manual-res-label">SAFE</span>
+          </div>
+        </div>
+
+        <!-- Score Meter Bar -->
+        <div class="ms-score-meter-container mb-3 p-3">
+          <div class="ms-score-meter-bar mb-2 mt-2">
+            <div class="ms-score-meter-indicator" id="manual-meter-indicator" style="left: 0%;"></div>
+          </div>
+          <div class="d-flex justify-content-between text-muted" style="font-size: 11px;">
+            <span class="text-success fw-semibold">0 Safe</span>
+            <span class="text-warning fw-semibold">30 Suspicious</span>
+            <span class="text-danger fw-semibold">60+ Spam</span>
+          </div>
+        </div>
+
+        <h6 class="fw-bold small text-uppercase text-muted mb-3">Itemized Rule Triggers & Evidence</h6>
+        <div class="d-flex flex-column gap-2" id="manual-res-reasons">
+          <!-- Dynamically populated via scan.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initManualScan } from "/static/js/scan.js";
+  initManualScan();
+</script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base_app.html" %}
+
+{% block title %}Account Details — Mail Shield{% endblock %}
+{% block header_title %}Account & Security{% endblock %}
+{% block header_subtitle %}Manage your user profile, credentials, and data privacy.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="row g-4">
+    <!-- 1. Profile & Identifiers -->
+    <div class="col-lg-6">
+      <div class="ms-card p-4 border mb-4">
+        <h5 class="fw-bold mb-3" style="color: var(--ms-navy);"><i class="bi bi-person-circle text-primary me-2"></i> Profile Information</h5>
+        <form id="profile-form">
+          <div class="mb-3">
+            <label class="form-label" for="profile-username">User ID</label>
+            <div class="form-control bg-light font-monospace" id="profile-username">-</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="profile-email">Email Address</label>
+            <div class="d-flex align-items-center gap-2">
+              <div class="form-control bg-light" id="profile-email">-</div>
+              <span id="profile-email-status" class="badge bg-secondary">-</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="profile-display-name">Display Name</label>
+            <input type="text" class="form-control" id="profile-display-name" placeholder="Your Name">
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Save Profile</button>
+        </form>
+      </div>
+
+      <!-- Change Password -->
+      <div class="ms-card p-4 border">
+        <h5 class="fw-bold mb-3" style="color: var(--ms-navy);"><i class="bi bi-key text-primary me-2"></i> Change Password</h5>
+        <form id="password-form">
+          <div class="mb-3">
+            <label class="form-label" for="pwd-current">Current Password</label>
+            <input type="password" class="form-control" id="pwd-current" placeholder="••••••••">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="pwd-new">New Password</label>
+            <input type="password" class="form-control" id="pwd-new" placeholder="••••••••" required>
+            <div class="text-muted mt-1" style="font-size: 11px;">Min 8 chars with uppercase, lowercase, digit & symbol</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="pwd-confirm">Confirm New Password</label>
+            <input type="password" class="form-control" id="pwd-confirm" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Update Password</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. Connected Mailboxes & Data Export -->
+    <div class="col-lg-6">
+      <div class="ms-card p-4 border mb-4">
+        <h5 class="fw-bold mb-3" style="color: var(--ms-navy);"><i class="bi bi-inboxes text-primary me-2"></i> Active Integrations</h5>
+        <div class="list-group list-group-flush border rounded bg-white" id="account-mailboxes-list">
+          <!-- Dynamically populated via account.js -->
+        </div>
+      </div>
+
+      <!-- Data Export & GDPR Danger Zone -->
+      <div class="ms-card p-4 border">
+        <h5 class="fw-bold mb-3" style="color: var(--ms-navy);"><i class="bi bi-shield-lock text-primary me-2"></i> Data Privacy & Control</h5>
+        <div class="mb-4">
+          <label class="form-label">Export Your Data Archive</label>
+          <p class="text-muted small mb-2">Download a full JSON archive containing your configured rules, custom threat scores, and scan history.</p>
+          <a href="/api/account/export" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-download"></i>
+            <span>Download Archive (JSON)</span>
+          </a>
+        </div>
+
+        <hr style="border-color: var(--ms-border);">
+
+        <div>
+          <label class="form-label text-danger">Delete Account & Wipe Data</label>
+          <p class="text-muted small mb-3">Permanently erase your user account, rule configurations, and all cached scan records. This action cannot be undone.</p>
+          <div class="input-group input-group-sm" style="max-width: 320px;">
+            <input type="text" class="form-control" id="delete-confirm-input" placeholder="Type DELETE to confirm">
+            <button class="btn btn-danger" type="button" id="btn-confirm-delete-account">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initAccount } from "/static/js/account.js";
+  initAccount();
+</script>
+{% endblock %}

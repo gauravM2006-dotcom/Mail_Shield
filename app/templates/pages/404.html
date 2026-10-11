@@ -1,0 +1,13 @@
+{% extends "base_public.html" %}
+{% block title %}Page Not Found — Mail Shield{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="py-5">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img mx-auto mb-3" style="width: 58px; height: 58px;">
+    <h1 class="display-3 fw-bold mb-2" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">404</h1>
+    <h4 class="fw-bold mb-2" style="color: var(--ms-navy);">Page Not Located</h4>
+    <p class="text-muted small mb-4 mx-auto" style="max-width: 380px;">The page you are looking for may have moved, expired, or does not exist.</p>
+    <a href="/" class="btn btn-primary px-4">Return Home</a>
+  </div>
+</div>
+{% endblock %}

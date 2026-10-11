@@ -1,0 +1,36 @@
+{% extends "base_public.html" %}
+
+{% block title %}Privacy Policy | Mail Shield{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="ms-card p-4 p-md-5">
+        <h2 class="fw-bold mb-3">Privacy Policy</h2>
+        <div class="text-muted small mb-4">Last Updated: October 2026</div>
+
+        <h5 class="fw-bold mt-4">1. Our Core Privacy Philosophy</h5>
+        <p class="text-muted small">
+          Mail Shield was engineered from the ground up on principles of data minimization and complete algorithmic transparency. We never train machine learning models on your email, never sell your information, and never share data with third parties.
+        </p>
+
+        <h5 class="fw-bold mt-4">2. Read-Only Mailbox Access</h5>
+        <p class="text-muted small">
+          When connecting Gmail, Outlook, Yahoo, or iCloud mailboxes, Mail Shield requests strictly read-only access (`gmail.readonly`, `Mail.Read`, IMAP read). Mail Shield does not possess the technical ability or authorization to send, delete, move, or modify emails on your remote mail servers.
+        </p>
+
+        <h5 class="fw-bold mt-4">3. Data Retention and Deletion</h5>
+        <p class="text-muted small">
+          Cached messages and scan histories are retained according to your customizable retention policy (default 30–90 days). Disconnecting a mailbox immediately purges all associated messages from our database. Deleting your account permanently deletes all user records, credentials, and settings.
+        </p>
+
+        <h5 class="fw-bold mt-4">4. Google API User Data Policy Compliance</h5>
+        <p class="text-muted small">
+          Mail Shield's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" class="text-decoration-none">Google API Services User Data Policy</a>, including the Limited Use requirements.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

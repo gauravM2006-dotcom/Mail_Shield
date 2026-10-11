@@ -1,0 +1,141 @@
+{% extends "base_app.html" %}
+
+{% block title %}Scan All Mailboxes — Mail Shield{% endblock %}
+{% block header_title %}Scan All Mailboxes{% endblock %}
+{% block header_subtitle %}Simultaneously evaluate threats across all connected mailboxes.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+      <div class="ms-card p-4 border mb-4">
+        <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">Multi-Mailbox Batch Threat Scan</h5>
+        <p class="text-muted small mb-4">
+          Execute the deterministic rule engine simultaneously across all your connected inboxes (Gmail, Outlook, Yahoo, and iCloud).
+        </p>
+
+        <!-- Mailboxes Selection -->
+        <h6 class="fw-bold small text-uppercase text-muted mb-3">1. Select Inboxes</h6>
+        <div class="d-flex flex-column gap-2 mb-4">
+          <label class="p-3 border rounded d-flex align-items-center justify-content-between cursor-pointer bg-white shadow-xs">
+            <div class="d-flex align-items-center gap-3">
+              <input class="form-check-input provider-check" type="checkbox" value="gmail" checked>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-google text-danger fs-5"></i>
+                <span class="fw-semibold" style="color: var(--ms-navy);">Google Gmail</span>
+              </div>
+            </div>
+            <span class="badge bg-success-subtle text-success border border-success-subtle small d-flex align-items-center gap-1">
+              <span class="status-dot live"></span> Live
+            </span>
+          </label>
+
+          <label class="p-3 border rounded d-flex align-items-center justify-content-between cursor-pointer bg-white shadow-xs">
+            <div class="d-flex align-items-center gap-3">
+              <input class="form-check-input provider-check" type="checkbox" value="outlook" checked>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-microsoft text-primary fs-5"></i>
+                <span class="fw-semibold" style="color: var(--ms-navy);">Microsoft Outlook</span>
+              </div>
+            </div>
+            <span class="badge bg-success-subtle text-success border border-success-subtle small d-flex align-items-center gap-1">
+              <span class="status-dot live"></span> Live
+            </span>
+          </label>
+
+          <label class="p-3 border rounded d-flex align-items-center justify-content-between cursor-pointer bg-white shadow-xs">
+            <div class="d-flex align-items-center gap-3">
+              <input class="form-check-input provider-check" type="checkbox" value="yahoo" checked>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-envelope-at-fill text-warning fs-5"></i>
+                <span class="fw-semibold" style="color: var(--ms-navy);">Yahoo Mail</span>
+              </div>
+            </div>
+            <span class="badge bg-secondary-subtle text-secondary border small d-flex align-items-center gap-1">
+              <span class="status-dot disconnected"></span> Available
+            </span>
+          </label>
+
+          <label class="p-3 border rounded d-flex align-items-center justify-content-between cursor-pointer bg-white shadow-xs">
+            <div class="d-flex align-items-center gap-3">
+              <input class="form-check-input provider-check" type="checkbox" value="icloud" checked>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-apple text-dark fs-5"></i>
+                <span class="fw-semibold" style="color: var(--ms-navy);">iCloud Mail</span>
+              </div>
+            </div>
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle small d-flex align-items-center gap-1">
+              <span class="status-dot syncing"></span> Ready
+            </span>
+          </label>
+        </div>
+
+        <!-- Scope Options -->
+        <h6 class="fw-bold small text-uppercase text-muted mb-3">2. Scan Scope</h6>
+        <div class="d-flex flex-wrap gap-4 mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="scan-mode" id="mode-unscanned" value="unscanned" checked>
+            <label class="form-check-label fw-semibold" for="mode-unscanned">
+              Scan Unscanned Messages Only
+              <div class="text-muted fw-normal" style="font-size: 11px;">Skips previously classified emails to save time</div>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="scan-mode" id="mode-all" value="all">
+            <label class="form-check-label fw-semibold" for="mode-all">
+              Re-Scan Entire Mailbox
+              <div class="text-muted fw-normal" style="font-size: 11px;">Re-evaluates every cached message with current rules</div>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg px-4" id="btn-start-scan-all">
+          <i class="bi bi-play-circle me-1"></i> Start Scanning
+        </button>
+      </div>
+
+      <!-- Scan Summary Report Card -->
+      <div class="ms-card p-4 border d-none" id="scan-all-summary-box">
+        <h5 class="fw-bold mb-3" style="color: var(--ms-navy);"><i class="bi bi-file-earmark-text text-primary me-2"></i> Scan Summary Report</h5>
+        <div class="row g-3 mb-4 text-center">
+          <div class="col-3">
+            <div class="p-3 border rounded bg-white shadow-xs">
+              <div class="fs-4 fw-bold" style="color: var(--ms-navy);" id="sum-total-scanned">0</div>
+              <div class="text-muted small">Total Scanned</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="p-3 border rounded bg-white shadow-xs">
+              <div class="fs-4 fw-bold text-success" id="sum-safe">0</div>
+              <div class="text-muted small">Safe</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="p-3 border rounded bg-white shadow-xs">
+              <div class="fs-4 fw-bold text-warning" id="sum-suspicious">0</div>
+              <div class="text-muted small">Suspicious</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="p-3 border rounded bg-white shadow-xs">
+              <div class="fs-4 fw-bold text-danger" id="sum-spam">0</div>
+              <div class="text-muted small">Spam</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="small text-muted">All results have been recorded to Scan History.</span>
+          <a href="/history" class="btn btn-sm btn-outline-secondary">View in Scan History →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initScanAll } from "/static/js/scan.js";
+  initScanAll();
+</script>
+{% endblock %}

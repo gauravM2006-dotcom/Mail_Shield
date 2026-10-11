@@ -1,0 +1,198 @@
+{% extends "base_app.html" %}
+
+{% block title %}Settings — Mail Shield{% endblock %}
+{% block header_title %}Settings{% endblock %}
+{% block header_subtitle %}Customize appearance, scanning depths, and alert notifications.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="row g-4">
+    <!-- 1. Appearance Card -->
+    <div class="col-lg-4">
+      <div class="ms-card p-4 border h-100">
+        <h5 class="fw-bold mb-4" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-palette text-primary me-2"></i> Appearance
+        </h5>
+
+        <!-- Theme Mode Pills matching Screen #10 -->
+        <div class="mb-4">
+          <label class="form-label" style="font-size: 0.8rem;">Color Mode</label>
+          <div class="d-flex gap-2">
+            <label class="flex-grow-1 p-3 border rounded text-center cursor-pointer d-flex flex-column align-items-center gap-1 shadow-xs" style="border-radius: 12px !important; transition: all 0.15s;" id="lbl-light">
+              <input class="d-none" type="radio" name="setting-theme" id="theme-light" value="light">
+              <i class="bi bi-sun text-warning fs-4"></i>
+              <span class="small fw-semibold">Light</span>
+            </label>
+            <label class="flex-grow-1 p-3 border rounded text-center cursor-pointer d-flex flex-column align-items-center gap-1 shadow-xs" style="border-radius: 12px !important; transition: all 0.15s;" id="lbl-dark">
+              <input class="d-none" type="radio" name="setting-theme" id="theme-dark" value="dark">
+              <i class="bi bi-moon-stars text-primary fs-4"></i>
+              <span class="small fw-semibold">Dark</span>
+            </label>
+            <label class="flex-grow-1 p-3 border rounded text-center cursor-pointer d-flex flex-column align-items-center gap-1 shadow-xs" style="border-radius: 12px !important; transition: all 0.15s;" id="lbl-system">
+              <input class="d-none" type="radio" name="setting-theme" id="theme-system" value="follow_system" checked>
+              <i class="bi bi-circle-half text-secondary fs-4"></i>
+              <span class="small fw-semibold">System</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Density & Font size -->
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <label class="form-label" for="setting-density">Layout Density</label>
+            <select class="form-select form-select-sm" id="setting-density">
+              <option value="comfortable">Comfortable</option>
+              <option value="compact">Compact</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="setting-font-size">Base Font Size</label>
+            <select class="form-select form-select-sm" id="setting-font-size">
+              <option value="small">Small</option>
+              <option value="medium" selected>Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Accent Colors -->
+        <div>
+          <label class="form-label" style="font-size: 0.8rem;">Accent Color</label>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-sm rounded-circle p-0 border-2" style="background:#1677FF; width:30px; height:30px; border: 2px solid transparent;" data-accent-choice="blue" title="Blue"></button>
+            <button class="btn btn-sm rounded-circle p-0" style="background:#0D9488; width:30px; height:30px; border: 2px solid transparent;" data-accent-choice="teal" title="Teal"></button>
+            <button class="btn btn-sm rounded-circle p-0" style="background:#7C3AED; width:30px; height:30px; border: 2px solid transparent;" data-accent-choice="purple" title="Purple"></button>
+            <button class="btn btn-sm rounded-circle p-0" style="background:#16A34A; width:30px; height:30px; border: 2px solid transparent;" data-accent-choice="green" title="Green"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <!-- 2. Scan & Sync Card -->
+      <div class="ms-card p-4 border mb-4">
+        <h5 class="fw-bold mb-4" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-arrow-repeat text-primary me-2"></i> Scan &amp; Sync
+        </h5>
+
+        <div class="mb-4">
+          <label class="form-label" for="setting-sync-depth">Default Sync Depth</label>
+          <select class="form-select form-select-sm" id="setting-sync-depth" style="max-width: 260px;">
+            <option value="7">Last 7 Days</option>
+            <option value="30" selected>Last 30 Days (Recommended)</option>
+            <option value="90">Last 90 Days</option>
+            <option value="365">Last 1 Year</option>
+          </select>
+        </div>
+
+        <!-- Toggle rows matching Screen #10 -->
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Auto-scan incoming emails</div>
+              <div class="text-muted" style="font-size: 11px;">Automatically inspect new emails as they arrive in realtime</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="setting-auto-scan-all" style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Scan depth: <strong>30 days</strong></div>
+              <div class="text-muted" style="font-size: 11px;">Import and scan emails from the last 30 days on first connect</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="setting-depth-30" checked style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Scan email when opened</div>
+              <div class="text-muted" style="font-size: 11px;">Trigger a scan when you open an unscanned email in the inbox</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="setting-scan-on-open" checked style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Notifications Card -->
+      <div class="ms-card p-4 border">
+        <h5 class="fw-bold mb-4" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">
+          <i class="bi bi-bell text-primary me-2"></i> Notifications
+        </h5>
+
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Spam detected alerts</div>
+              <div class="text-muted" style="font-size: 11px;">Notify immediately when a high-risk phishing email is identified</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="notif-spam" checked style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Connection problems</div>
+              <div class="text-muted" style="font-size: 11px;">Alert if OAuth token expires or a mailbox needs re-authentication</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="notif-connection" checked style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="border-radius: 12px !important;">
+            <div>
+              <div class="fw-semibold small" style="color: var(--ms-navy);">Scan completed</div>
+              <div class="text-muted" style="font-size: 11px;">Show a summary notification when a batch mailbox scan finishes</div>
+            </div>
+            <div class="form-check form-switch mb-0 ms-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="notif-scan-done" checked style="width: 2.2em; height: 1.2em;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Bar -->
+  <div class="d-flex justify-content-end mt-4 gap-2">
+    <button class="btn btn-outline-secondary btn-sm" id="btn-reset-settings">
+      <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Defaults
+    </button>
+    <button class="btn btn-primary btn-sm" id="btn-save-settings">
+      <i class="bi bi-check2 me-1"></i> Save Changes
+    </button>
+  </div>
+</div>
+
+<script type="module">
+  import { initSettings } from "/static/js/settings.js";
+  initSettings();
+
+  // Highlight active theme pill label
+  document.querySelectorAll("[name='setting-theme']").forEach(radio => {
+    radio.addEventListener("change", () => {
+      document.querySelectorAll("#lbl-light, #lbl-dark, #lbl-system").forEach(lbl => {
+        lbl.style.borderColor = "var(--ms-border)";
+        lbl.style.background = "var(--ms-surface)";
+      });
+      const selected = document.querySelector("[name='setting-theme']:checked");
+      if (selected) {
+        const map = { light: "lbl-light", dark: "lbl-dark", follow_system: "lbl-system" };
+        const lbl = document.getElementById(map[selected.value]);
+        if (lbl) { lbl.style.borderColor = "var(--ms-primary)"; lbl.style.background = "var(--ms-primary-light)"; }
+      }
+    });
+  });
+
+  // Init highlight
+  const checked = document.querySelector("[name='setting-theme']:checked");
+  if (checked) checked.dispatchEvent(new Event("change"));
+</script>
+{% endblock %}

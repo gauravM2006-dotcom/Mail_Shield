@@ -1,0 +1,174 @@
+{% extends "base_public.html" %}
+
+{% block title %}Sign In — Mail Shield{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row align-items-center justify-content-center g-5 py-lg-4">
+    <!-- Left Hero/Visual Side -->
+    <div class="col-lg-6 d-none d-lg-block">
+      <div class="pe-xl-4">
+        <span class="ms-hero-badge-pill mb-3 shadow-xs">
+          <span class="status-dot live"></span>
+          <span>Zero-Trust Mailbox Protection</span>
+        </span>
+        <h2 class="display-6 fw-bold mb-3" style="color: var(--ms-navy);">
+          Safer Emails.<br>
+          <span class="highlight-blue">Stronger Decisions.</span>
+        </h2>
+        <p class="lead text-muted mb-4" style="font-size: 1.05rem; line-height: 1.6;">
+          Sign in to your unified security console to monitor connected Gmail, Outlook, Yahoo, and iCloud inboxes in real time.
+        </p>
+
+        <!-- Threat Metric Highlights Strip -->
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <div class="p-3 rounded-3 border bg-white shadow-xs">
+              <div class="fw-bold fs-4 text-primary">100%</div>
+              <div class="text-muted small">Deterministic Logic</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 rounded-3 border bg-white shadow-xs">
+              <div class="fw-bold fs-4 text-success">&lt; 50ms</div>
+              <div class="text-muted small">Per-Email Scan Speed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-light">
+          <div class="p-2 rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div class="small">
+            <strong class="d-block" style="color: var(--ms-navy);">Verified Read-Only Isolation</strong>
+            <span class="text-muted">Mail Shield never requests write or send permissions for your mailbox.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="col-lg-5 col-md-8 col-sm-11">
+      <div class="ms-card p-4 p-md-5 shadow-lg border position-relative" style="background: var(--ms-surface); border-radius: 24px;">
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img mx-auto mb-3" style="width: 52px; height: 52px;">
+          <h3 class="fw-bold mb-1" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">Welcome Back</h3>
+          <p class="small text-muted mb-0">Sign in to your Mail Shield account</p>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="login-error-alert" class="alert alert-danger d-none small py-2 px-3 border-0 rounded-3 mb-3"></div>
+
+        <!-- Form -->
+        <form id="login-form">
+          <div class="mb-3">
+            <label class="form-label" for="login-identifier">Email or User ID</label>
+            <input type="text" class="form-control" id="login-identifier" placeholder="name@example.com" required autocomplete="username">
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label class="form-label mb-0" for="login-password">Password</label>
+              <a href="/forgot-password" class="small text-decoration-none text-primary fw-medium" style="font-size: 12px;">Forgot password?</a>
+            </div>
+            <div class="position-relative">
+              <input type="password" class="form-control pe-5" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted p-2 me-1" id="btn-toggle-pwd" tabindex="-1" style="box-shadow:none; text-decoration:none;">
+                <i class="bi bi-eye" id="pwd-eye-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="login-remember" checked>
+            <label class="form-check-label small text-muted" for="login-remember">Keep me signed in for 30 days</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 mb-3 fw-semibold shadow-sm" id="btn-login-submit" style="border-radius: 12px;">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="position-relative text-center my-3">
+          <hr style="border-color: var(--ms-border);">
+          <span class="position-absolute top-50 start-50 translate-middle px-3 small text-muted" style="background: var(--ms-surface); font-size: 11px;">or continue with</span>
+        </div>
+
+        <!-- OAuth 4 Icons Row -->
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-4">
+          <a href="/auth/google/start?mode=login" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign in with Google">
+            <i class="bi bi-google text-danger fs-5"></i>
+          </a>
+          <a href="/auth/microsoft/start?mode=login" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign in with Microsoft">
+            <i class="bi bi-microsoft text-primary fs-5"></i>
+          </a>
+          <a href="/auth/yahoo/start?mode=login" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign in with Yahoo">
+            <i class="bi bi-envelope-at-fill text-warning fs-5"></i>
+          </a>
+          <a href="/auth/apple/start?mode=login" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign in with Apple">
+            <i class="bi bi-apple text-dark fs-5"></i>
+          </a>
+        </div>
+
+        <!-- Footer link -->
+        <div class="text-center small text-muted">
+          Don't have an account yet? <a href="/signup" class="text-primary fw-semibold">Create an account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { apiRequest } from "/static/js/api.js";
+  import { showToast } from "/static/js/toast.js";
+
+  const form = document.getElementById("login-form");
+  const errAlert = document.getElementById("login-error-alert");
+  const btn = document.getElementById("btn-login-submit");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errAlert.classList.add("d-none");
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Signing in...`;
+
+    const identifier = document.getElementById("login-identifier").value.trim();
+    const password = document.getElementById("login-password").value;
+    const remember = document.getElementById("login-remember").checked;
+
+    try {
+      const res = await apiRequest("/api/auth/login", {
+        method: "POST",
+        body: { identifier, password, remember }
+      });
+      if (res.ok) {
+        showToast("Signed in successfully!", "success");
+        window.location.href = "/dashboard";
+      }
+    } catch (err) {
+      errAlert.textContent = err.message || "Failed to sign in. Please verify your credentials.";
+      errAlert.classList.remove("d-none");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `Sign In`;
+    }
+  });
+
+  // Toggle password visibility
+  document.getElementById("btn-toggle-pwd")?.addEventListener("click", () => {
+    const pwdInput = document.getElementById("login-password");
+    const eyeIcon = document.getElementById("pwd-eye-icon");
+    if (pwdInput.type === "password") {
+      pwdInput.type = "text";
+      eyeIcon.className = "bi bi-eye-slash";
+    } else {
+      pwdInput.type = "password";
+      eyeIcon.className = "bi bi-eye";
+    }
+  });
+</script>
+{% endblock %}

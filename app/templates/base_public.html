@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mail Shield — Modern Email Threat Intelligence{% endblock %}</title>
+  <meta name="description" content="Mail Shield protects users from spam, phishing, and suspicious emails using a transparent, explainable rule engine. Safer Emails. Stronger Decisions.">
+  
+  <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5.3.3 & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Mail Shield Design System -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script type="module" src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</head>
+<body>
+  <!-- Glassmorphic Navbar with Circular Logo -->
+  <nav class="ms-navbar" id="publicNavbar">
+    <div class="container d-flex align-items-center justify-content-between">
+      <!-- Left: Logo & Brand -->
+      <a class="ms-brand" href="/">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img">
+        <span>Mail Shield</span>
+      </a>
+
+      <!-- Center: Streamlined Navigation Links -->
+      <div class="d-none d-lg-flex align-items-center gap-1">
+        <a class="ms-nav-link" href="/">Home</a>
+        <a class="ms-nav-link" href="/#how-it-works">How It Works</a>
+        <a class="ms-nav-link" href="/#what-it-delivers">What It Delivers</a>
+        <a class="ms-nav-link" href="/#how-it-is-different">How It's Different</a>
+      </div>
+
+      <!-- Right: Action CTA & Theme -->
+      <div class="d-flex align-items-center gap-2">
+        <!-- Theme Toggle -->
+        <div class="dropdown me-1">
+          <button class="btn btn-sm btn-outline-secondary px-2" data-bs-toggle="dropdown" aria-label="Toggle theme">
+            <i class="bi bi-sun-fill" id="public-theme-icon"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 12px;">
+            <li><button class="dropdown-item d-flex align-items-center gap-2 small py-2" onclick="import('/static/js/theme.js').then(m => m.applyTheme('light'))"><i class="bi bi-sun text-warning"></i> Light Mode</button></li>
+            <li><button class="dropdown-item d-flex align-items-center gap-2 small py-2" onclick="import('/static/js/theme.js').then(m => m.applyTheme('dark'))"><i class="bi bi-moon-stars text-primary"></i> Dark Mode</button></li>
+            <li><button class="dropdown-item d-flex align-items-center gap-2 small py-2" onclick="import('/static/js/theme.js').then(m => m.applyTheme('follow_system'))"><i class="bi bi-circle-half text-secondary"></i> System Default</button></li>
+          </ul>
+        </div>
+
+        <!-- Single Clean Primary Action Button: Get Started redirects to /login -->
+        {% if current_user.is_authenticated %}
+          <a href="/dashboard" class="btn btn-primary btn-sm px-3">
+            <i class="bi bi-speedometer2 me-1"></i>
+            <span>Dashboard</span>
+          </a>
+        {% else %}
+          <a href="/login" class="btn btn-primary btn-sm px-4">
+            <span>Get Started</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Modern SaaS Footer -->
+  <footer class="ms-footer">
+    <div class="container">
+      <div class="row gy-4 mb-4">
+        <div class="col-lg-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img" style="width: 32px; height: 32px;">
+            <span class="fw-bold fs-5" style="font-family: var(--ms-font-heading); color: var(--ms-navy);">Mail Shield</span>
+          </div>
+          <p class="small mb-3" style="max-width: 440px;">
+            Deterministic, explainable email threat scanning. Every flagged email receives an itemized risk score and verifiable proof without opaque AI models.
+          </p>
+          <div class="d-flex align-items-center gap-2 text-muted small flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+              <i class="bi bi-shield-lock-fill me-1"></i> Strict Read-Only Scopes
+            </span>
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+              <i class="bi bi-cpu me-1"></i> Deterministic Engine v1.0
+            </span>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <h6 class="fw-bold mb-3 small text-uppercase" style="letter-spacing: 0.06em; color: var(--ms-navy);">Platform</h6>
+          <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
+            <li><a href="/#what-it-delivers" class="text-muted text-decoration-none">What It Delivers</a></li>
+            <li><a href="/#how-it-is-different" class="text-muted text-decoration-none">How It's Different</a></li>
+            <li><a href="/manual-scan" class="text-muted text-decoration-none">Manual Sandbox</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <h6 class="fw-bold mb-3 small text-uppercase" style="letter-spacing: 0.06em; color: var(--ms-navy);">Legal &amp; Privacy</h6>
+          <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
+            <li><a href="/privacy" class="text-muted text-decoration-none">Privacy Policy</a></li>
+            <li><a href="/terms" class="text-muted text-decoration-none">Terms of Service</a></li>
+            <li><a href="/system-health" class="text-muted text-decoration-none">System Health</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-top pt-4 d-flex flex-wrap align-items-center justify-content-between gap-3 text-muted small">
+        <div>© 2026 Mail Shield. Engineered for explainable mailbox defense.</div>
+        <div class="d-flex align-items-center gap-3">
+          <a href="/privacy" class="text-muted text-decoration-none">Privacy</a>
+          <span>·</span>
+          <a href="/terms" class="text-muted text-decoration-none">Terms</a>
+          <span>·</span>
+          <a href="/login" class="text-muted text-decoration-none">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+{% extends "base_public.html" %}
+
+{% block title %}Create Account — Mail Shield{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row align-items-center justify-content-center g-5 py-lg-4">
+    <!-- Left Hero/Visual Side -->
+    <div class="col-lg-6 d-none d-lg-block">
+      <div class="pe-xl-4">
+        <span class="ms-hero-badge-pill mb-3 shadow-xs">
+          <span class="status-dot live"></span>
+          <span>Instant Read-Only Protection</span>
+        </span>
+        <h2 class="display-6 fw-bold mb-3" style="color: var(--ms-navy);">
+          Deploy Deterministic Defense<br>
+          <span class="highlight-blue">In Under 30 Seconds.</span>
+        </h2>
+        <p class="lead text-muted mb-4" style="font-size: 1.05rem; line-height: 1.6;">
+          Join thousands who make stronger, safer decisions on every email they open. Pure explainable rules without AI hallucinations.
+        </p>
+
+        <!-- Feature Points -->
+        <div class="d-flex flex-column gap-3 mb-4">
+          <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-white shadow-xs">
+            <div class="p-2 rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <div class="small">
+              <strong class="d-block" style="color: var(--ms-navy);">Zero Data Sharing</strong>
+              <span class="text-muted">Your email contents are analyzed strictly within your private session.</span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-white shadow-xs">
+            <div class="p-2 rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+              <i class="bi bi-sliders"></i>
+            </div>
+            <div class="small">
+              <strong class="d-block" style="color: var(--ms-navy);">Customizable Risk Thresholds</strong>
+              <span class="text-muted">Set your own sensitivity boundaries for suspicious and malicious classifications.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="col-lg-5 col-md-8 col-sm-11">
+      <div class="ms-card p-4 p-md-5 shadow-lg border position-relative" style="background: var(--ms-surface); border-radius: 24px;">
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img mx-auto mb-3" style="width: 52px; height: 52px;">
+          <h3 class="fw-bold mb-1" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">Create Your Account</h3>
+          <p class="small text-muted mb-0">Start your journey to an AI-proof, safe inbox</p>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="signup-error-alert" class="alert alert-danger d-none small py-2 px-3 border-0 rounded-3 mb-3"></div>
+
+        <!-- Form -->
+        <form id="signup-form">
+          <div class="mb-3">
+            <label class="form-label" for="signup-username">User ID / Handle</label>
+            <input type="text" class="form-control" id="signup-username" placeholder="alex2026" required autocomplete="username">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="signup-email">Email Address</label>
+            <input type="email" class="form-control" id="signup-email" placeholder="alex@company.com" required autocomplete="email">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="signup-password">Password</label>
+            <div class="position-relative">
+              <input type="password" class="form-control pe-5" id="signup-password" placeholder="••••••••" required autocomplete="new-password">
+              <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted p-2 me-1" id="btn-toggle-pwd" tabindex="-1" style="box-shadow:none; text-decoration:none;">
+                <i class="bi bi-eye" id="pwd-eye-icon"></i>
+              </button>
+            </div>
+            <div class="text-muted mt-1" style="font-size: 11px;">Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special symbol</div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="signup-terms" checked required>
+            <label class="form-check-label small text-muted" for="signup-terms">
+              I agree to the <a href="/terms" class="text-primary text-decoration-none">Terms</a> and <a href="/privacy" class="text-primary text-decoration-none">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 mb-3 fw-semibold shadow-sm" id="btn-signup-submit" style="border-radius: 12px;">
+            Create Free Account
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="position-relative text-center my-3">
+          <hr style="border-color: var(--ms-border);">
+          <span class="position-absolute top-50 start-50 translate-middle px-3 small text-muted" style="background: var(--ms-surface); font-size: 11px;">or continue with</span>
+        </div>
+
+        <!-- OAuth 4 Icons Row -->
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-4">
+          <a href="/auth/google/start?mode=signup" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign up with Google">
+            <i class="bi bi-google text-danger fs-5"></i>
+          </a>
+          <a href="/auth/microsoft/start?mode=signup" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign up with Microsoft">
+            <i class="bi bi-microsoft text-primary fs-5"></i>
+          </a>
+          <a href="/auth/yahoo/start?mode=signup" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign up with Yahoo">
+            <i class="bi bi-envelope-at-fill text-warning fs-5"></i>
+          </a>
+          <a href="/auth/apple/start?mode=signup" class="btn btn-outline-secondary p-2 flex-grow-1" style="border-radius: 12px; height: 42px;" title="Sign up with Apple">
+            <i class="bi bi-apple text-dark fs-5"></i>
+          </a>
+        </div>
+
+        <!-- Footer link -->
+        <div class="text-center small text-muted">
+          Already have an account? <a href="/login" class="text-primary fw-semibold">Sign in here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { apiRequest } from "/static/js/api.js";
+  import { showToast } from "/static/js/toast.js";
+
+  const form = document.getElementById("signup-form");
+  const errAlert = document.getElementById("signup-error-alert");
+  const btn = document.getElementById("btn-signup-submit");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errAlert.classList.add("d-none");
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Creating Account...`;
+
+    try {
+      const res = await apiRequest("/api/auth/signup", {
+        method: "POST",
+        body: {
+          username: document.getElementById("signup-username").value.trim(),
+          email: document.getElementById("signup-email").value.trim(),
+          password: document.getElementById("signup-password").value,
+          accept: document.getElementById("signup-terms").checked
+        }
+      });
+
+      if (res.ok) {
+        showToast("Account created successfully!", "success");
+        window.location.href = "/dashboard";
+      }
+    } catch (err) {
+      errAlert.textContent = err.message || "Failed to create account.";
+      errAlert.classList.remove("d-none");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `Create Free Account`;
+    }
+  });
+
+  // Password visibility toggle
+  document.getElementById("btn-toggle-pwd")?.addEventListener("click", () => {
+    const pwdInput = document.getElementById("signup-password");
+    const icon = document.getElementById("pwd-eye-icon");
+    if (pwdInput.type === "password") {
+      pwdInput.type = "text";
+      icon.className = "bi bi-eye-slash";
+    } else {
+      pwdInput.type = "password";
+      icon.className = "bi bi-eye";
+    }
+  });
+</script>
+{% endblock %}

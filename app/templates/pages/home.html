@@ -1,0 +1,416 @@
+{% extends "base_public.html" %}
+
+{% block title %}Mail Shield — Safer Emails. Stronger Decisions.{% endblock %}
+
+{% block content %}
+<!-- 1. HERO SECTION -->
+<section class="ms-hero-container text-center">
+  <div class="container position-relative" style="z-index: 2;">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-8">
+        <!-- Badge Pill -->
+        <div class="mb-3">
+          <span class="ms-hero-badge-pill shadow-xs">
+            <span class="status-dot live"></span>
+            <span>Deterministic Email Threat Intelligence</span>
+          </span>
+        </div>
+
+        <!-- Headline with Faint Blue Glow Strictly Behind Text -->
+        <div class="ms-headline-glow mb-4">
+          <h1 class="ms-hero-heading mb-0">
+            Safer Emails.<br>
+            <span class="highlight-blue">Stronger Decisions.</span>
+          </h1>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="lead mb-4 mx-auto text-muted" style="font-size: 1.15rem; line-height: 1.7; max-width: 620px;">
+          Protect yourself from sophisticated phishing, spoofed domains, and scam emails with an explainable, rule-based threat engine. Every flagged email comes with verifiable proof.
+        </p>
+
+        <!-- Single Primary CTA Button -->
+        <div class="d-flex justify-content-center mb-4">
+          <a href="/login" class="btn btn-primary btn-lg shadow-sm px-5 py-3 fs-6">
+            <span>Get Started Free</span>
+            <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+
+        <!-- Trust Badges Under Hero -->
+        <div class="d-flex align-items-center justify-content-center gap-4 text-muted small mt-2 flex-wrap">
+          <span><i class="bi bi-shield-check text-success me-1"></i> 100% Explainable</span>
+          <span><i class="bi bi-lock text-success me-1"></i> Read-Only Scopes</span>
+          <span><i class="bi bi-lightning text-success me-1"></i> Real-Time Analysis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. CENTERPIECE SECTION: TRANSPARENT BY DESIGN (Actual Advantage) -->
+<section class="py-5" id="centerpiece-advantage">
+  <div class="container py-3">
+    <!-- Header: Eyebrow + Advantage Headline -->
+    <div class="text-center mb-5">
+      <div class="mb-2">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold" style="letter-spacing: 0.06em; font-size: 0.82rem;">
+          TRANSPARENT BY DESIGN
+        </span>
+      </div>
+      <h2 class="display-6 fw-bold mb-3" style="color: var(--ms-navy);">
+        Every warning comes with a reason.
+      </h2>
+      <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.1rem; line-height: 1.6;">
+        Mail Shield uses a rule-based approach to explain how an email receives its risk score.
+      </p>
+    </div>
+
+    <!-- Product Preview Transition Area (White-to-Light-Blue Backdrop) -->
+    <div class="ms-preview-backdrop">
+      <div class="row g-4 align-items-center">
+        <!-- Left Side: Exact Threat Audit Breakdown Card -->
+        <div class="col-lg-6">
+          <div class="ms-audit-card">
+            <!-- Audit Header -->
+            <div class="ms-audit-header">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 small fw-bold">
+                  <i class="bi bi-shield-exclamation me-1"></i> THREAT AUDIT
+                </span>
+                <span class="text-muted small font-monospace">ID: #MS-8842</span>
+              </div>
+              <div class="text-muted small">
+                <i class="bi bi-clock me-1"></i> Just now
+              </div>
+            </div>
+
+            <div class="p-3 border-bottom bg-body-tertiary">
+              <div class="d-flex align-items-center gap-2 text-truncate">
+                <i class="bi bi-envelope-exclamation text-warning fs-5"></i>
+                <div class="text-truncate">
+                  <div class="fw-bold small text-truncate" style="color: var(--ms-navy);">Security Alert: Verify Your Account Credentials</div>
+                  <div class="text-muted small font-monospace text-truncate" style="font-size: 0.78rem;">From: support@paypa1-security.com</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Audit Rule Tally Rows -->
+            <div class="ms-audit-row">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-person-x text-warning"></i>
+                <span class="fw-medium">Suspicious sender</span>
+              </div>
+              <span class="ms-audit-score-pill bg-warning-subtle text-warning border border-warning-subtle">
+                +20
+              </span>
+            </div>
+
+            <div class="ms-audit-row">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-link-45deg text-danger"></i>
+                <span class="fw-medium">Unusual URL</span>
+              </div>
+              <span class="ms-audit-score-pill bg-danger-subtle text-danger border border-danger-subtle">
+                +30
+              </span>
+            </div>
+
+            <div class="ms-audit-row">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-alarm text-primary"></i>
+                <span class="fw-medium">Urgent language</span>
+              </div>
+              <span class="ms-audit-score-pill bg-primary-subtle text-primary border border-primary-subtle">
+                +10
+              </span>
+            </div>
+
+            <div class="ms-audit-row">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-key text-primary"></i>
+                <span class="fw-medium">Phishing keyword</span>
+              </div>
+              <span class="ms-audit-score-pill bg-primary-subtle text-primary border border-primary-subtle">
+                +10
+              </span>
+            </div>
+
+            <!-- Divider & Total Result -->
+            <div class="ms-audit-total-bar">
+              <div>
+                <div class="text-muted small text-uppercase fw-bold" style="letter-spacing: 0.05em; font-size: 0.72rem;">Total Calculated Score</div>
+                <div class="fs-4 fw-extrabold font-monospace" style="color: var(--ms-navy);">
+                  70 <span class="fs-6 text-muted fw-normal">/ 100</span>
+                </div>
+              </div>
+              <div>
+                <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill fw-bold shadow-xs d-inline-flex align-items-center gap-2">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                  <span>SUSPICIOUS</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Concise Core Differentiator Explanation -->
+        <div class="col-lg-6 ps-lg-4">
+          <div class="mb-3">
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill small fw-semibold">
+              <i class="bi bi-check-circle-fill me-1"></i> Explainable Intelligence
+            </span>
+          </div>
+          <h3 class="h2 fw-bold mb-3" style="color: var(--ms-navy); line-height: 1.3;">
+            No unexplained warnings.
+          </h3>
+          <p class="text-muted mb-4" style="font-size: 1.05rem; line-height: 1.7;">
+            Every detection can be traced to specific rules and contributing factors. Users and security teams can understand why an email was flagged and adjust rules if needed.
+          </p>
+
+          <div class="d-flex flex-column gap-3 mb-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="ms-stat-icon-wrapper flex-shrink-0" style="width: 38px; height: 38px; font-size: 1.1rem; background-color: var(--ms-primary-light); color: var(--ms-primary);">
+                <i class="bi bi-calculator"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Deterministic Arithmetic</h6>
+                <p class="small text-muted mb-0">Identical email scans always produce the identical score. Zero random drift or generative hallucinations.</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start gap-3">
+              <div class="ms-stat-icon-wrapper flex-shrink-0" style="width: 38px; height: 38px; font-size: 1.1rem; background-color: var(--ms-safe-bg); color: var(--ms-safe-text);">
+                <i class="bi bi-sliders"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Tunable Thresholds</h6>
+                <p class="small text-muted mb-0">Adjust weights for urgency, domain mismatches, or link density to match your exact security appetite.</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <a href="/login" class="btn btn-outline-primary px-4 py-2 fw-semibold">
+              <span>Explore the Rule Engine</span>
+              <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. HOW IT WORKS & WINNING CUSTOMER TRUST SECTION -->
+<section class="py-5" id="how-it-works" style="background-color: var(--ms-surface);">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="ms-hero-badge-pill mb-2">Customer Trust &amp; Architecture</span>
+      <h2 class="display-6 fw-bold mb-2" style="color: var(--ms-navy);">How Mail Shield Works</h2>
+      <p class="text-muted mx-auto" style="max-width: 620px;">
+        Designed from the ground up to respect your confidentiality. We believe email security shouldn't require surrendering your privacy.
+      </p>
+    </div>
+
+    <!-- Trust Pillars Grid -->
+    <div class="row g-4 mb-5">
+      <!-- Trust Card 1: Read-Only Scopes -->
+      <div class="col-lg-3 col-md-6">
+        <div class="ms-trust-card">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-safe-bg); color: var(--ms-safe-text);">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">1. Strict Read-Only</h5>
+          <p class="small text-muted mb-0">
+            Mail Shield only connects via read-only OAuth. We never request permission to send, edit, forward, or delete any of your emails.
+          </p>
+        </div>
+      </div>
+
+      <!-- Trust Card 2: In-Memory Processing -->
+      <div class="col-lg-3 col-md-6">
+        <div class="ms-trust-card">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-primary-light); color: var(--ms-primary);">
+            <i class="bi bi-memory"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">2. In-Memory Analysis</h5>
+          <p class="small text-muted mb-0">
+            Email bodies and headers are parsed in ephemeral memory buffers during detection. Your email content is never permanently stored on our disks.
+          </p>
+        </div>
+      </div>
+
+      <!-- Trust Card 3: Zero AI Training -->
+      <div class="col-lg-3 col-md-6">
+        <div class="ms-trust-card">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-secondary-light); color: var(--ms-secondary);">
+            <i class="bi bi-eye-slash"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">3. Zero AI Training</h5>
+          <p class="small text-muted mb-0">
+            We never send your correspondence to public LLMs or use your communications to train AI models. Your inbox remains strictly your private domain.
+          </p>
+        </div>
+      </div>
+
+      <!-- Trust Card 4: Complete Sovereignty -->
+      <div class="col-lg-3 col-md-6">
+        <div class="ms-trust-card">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-suspicious-bg); color: var(--ms-suspicious-text);">
+            <i class="bi bi-trash3"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">4. One-Click Revocation</h5>
+          <p class="small text-muted mb-0">
+            You maintain 100% control. Disconnect your mailbox at any time from your settings to instantly wipe all tokens and cached scan metadata.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step Flow Row -->
+    <div class="ms-card p-4 border">
+      <div class="row g-4 text-center">
+        <div class="col-md-3">
+          <div class="fw-bold text-primary font-monospace small mb-1">STEP 01</div>
+          <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Authorize Mailbox</h6>
+          <p class="text-muted small mb-0">Connect via Google or IMAP with read-only cryptographic tokens.</p>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-primary font-monospace small mb-1">STEP 02</div>
+          <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Heuristic Inspection</h6>
+          <p class="text-muted small mb-0">Engine parses sender authenticity, punycode, redirects, and linguistic cues.</p>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-primary font-monospace small mb-1">STEP 03</div>
+          <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Mathematical Tally</h6>
+          <p class="text-muted small mb-0">Deterministic rules contribute verified points (0 to 100) with line-by-line evidence.</p>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-primary font-monospace small mb-1">STEP 04</div>
+          <h6 class="fw-bold mb-1" style="color: var(--ms-navy);">Actionable Verdict</h6>
+          <p class="text-muted small mb-0">Classified as Safe, Suspicious, or Spam with an itemized breakdown you can verify.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. WHAT IT DELIVERS SECTION -->
+<section class="py-5" id="what-it-delivers">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="ms-hero-badge-pill mb-2">Core Capabilities</span>
+      <h2 class="display-6 fw-bold mb-2" style="color: var(--ms-navy);">What Mail Shield Delivers</h2>
+      <p class="text-muted mx-auto" style="max-width: 540px;">
+        Everything you need to know about incoming emails before clicking links or downloading attachments.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- 1. Itemized Risk Score -->
+      <div class="col-lg-4 col-md-6">
+        <div class="ms-card p-4 h-100 border">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-primary-light); color: var(--ms-primary);">
+            <i class="bi bi-speedometer2"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">Itemized Risk Scoring (0–100)</h5>
+          <p class="small text-muted mb-0">
+            Every email is evaluated across 6 deterministic detection groups (sender mismatch, dangerous URLs, urgent keywords, typography, and attachments) with exact point additions.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. Verifiable Point-by-Point Proof -->
+      <div class="col-lg-4 col-md-6">
+        <div class="ms-card p-4 h-100 border">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-safe-bg); color: var(--ms-safe-text);">
+            <i class="bi bi-file-earmark-check"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">Verifiable Evidence &amp; Proof</h5>
+          <p class="small text-muted mb-0">
+            Never guess why an email was classified as a threat. Inspect the exact rule IDs, matched substrings, spoofed sender domains, and raw link targets that triggered the alert.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. Zero-Trust Privacy First -->
+      <div class="col-lg-4 col-md-6">
+        <div class="ms-card p-4 h-100 border">
+          <div class="ms-stat-icon-wrapper mb-3" style="background-color: var(--ms-secondary-light); color: var(--ms-secondary);">
+            <i class="bi bi-shield-lock-fill"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--ms-navy);">Strict Read-Only Privacy</h5>
+          <p class="small text-muted mb-0">
+            Mail Shield never modifies, sends, or deletes your emails. Credential tokens are encrypted at rest with Fernet AES-128, and your data is never fed to third-party AI models.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. HOW IT IS DIFFERENT (DETERMINISTIC VS BLACK-BOX AI) -->
+<section class="py-5" id="how-it-is-different" style="background-color: var(--ms-surface);">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="ms-hero-badge-pill mb-2">Architectural Difference</span>
+      <h2 class="display-6 fw-bold mb-2" style="color: var(--ms-navy);">How Is Mail Shield Different?</h2>
+      <p class="text-muted mx-auto" style="max-width: 580px;">
+        Traditional AI spam filters are probabilistic black boxes that hallucinate and make opaque mistakes. Mail Shield is built on deterministic, auditable rules.
+      </p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="table-responsive ms-card p-0 border overflow-hidden">
+          <table class="table table-bordered mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="p-3" style="width: 25%;">Core Dimension</th>
+                <th class="p-3 text-muted" style="width: 37%;">Traditional Black-Box AI</th>
+                <th class="p-3 text-primary fw-bold" style="width: 38%; background: var(--ms-primary-light);">Mail Shield Deterministic Defense</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-3 fw-bold">Explainability</td>
+                <td class="p-3 text-muted">Gives an opaque score like "94% spam" with zero rationale or audit trail.</td>
+                <td class="p-3 fw-semibold text-success"><i class="bi bi-check-circle-fill me-1"></i> Exact rule IDs, matched substrings, and line-by-line evidence.</td>
+              </tr>
+              <tr>
+                <td class="p-3 fw-bold">Predictability</td>
+                <td class="p-3 text-muted">Scores drift unpredictably when rephrasing or updating model weights.</td>
+                <td class="p-3 fw-semibold text-success"><i class="bi bi-check-circle-fill me-1"></i> 100% deterministic arithmetic. Identical email = identical score.</td>
+              </tr>
+              <tr>
+                <td class="p-3 fw-bold">User Control</td>
+                <td class="p-3 text-muted">Fixed proprietary weights. Users cannot adjust rule sensitivity.</td>
+                <td class="p-3 fw-semibold text-success"><i class="bi bi-check-circle-fill me-1"></i> Tunable threshold sliders, keyword weights, and allow/block lists.</td>
+              </tr>
+              <tr>
+                <td class="p-3 fw-bold">Privacy &amp; Data Safety</td>
+                <td class="p-3 text-muted">Sends private email text to remote LLM APIs that may use data for training.</td>
+                <td class="p-3 fw-semibold text-success"><i class="bi bi-check-circle-fill me-1"></i> Evaluated purely in-memory with strict multi-tenant isolation.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FINAL CALL TO ACTION -->
+<section class="py-5 text-center position-relative overflow-hidden">
+  <div class="container py-5">
+    <h2 class="display-6 fw-bold mb-3" style="color: var(--ms-navy);">Ready for a clearer, safer inbox?</h2>
+    <p class="text-muted mb-4 mx-auto" style="max-width: 520px; font-size: 1.1rem;">
+      Take control of your email threat intelligence today with explainable, deterministic scoring.
+    </p>
+    <div class="d-flex justify-content-center">
+      <a href="/login" class="btn btn-primary btn-lg shadow-sm px-5 py-3">Get Started Free →</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

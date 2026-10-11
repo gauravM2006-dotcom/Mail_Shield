@@ -1,0 +1,48 @@
+{
+  "dangerous": [
+    "exe",
+    "bat",
+    "cmd",
+    "com",
+    "scr",
+    "pif",
+    "vbs",
+    "vbe",
+    "js",
+    "jse",
+    "wsf",
+    "wsh",
+    "ps1",
+    "msi",
+    "jar",
+    "hta",
+    "lnk",
+    "reg",
+    "dll",
+    "cpl",
+    "apk"
+  ],
+  "macro": [
+    "docm",
+    "xlsm",
+    "pptm",
+    "dotm",
+    "xlam"
+  ],
+  "archive": [
+    "zip",
+    "rar",
+    "7z",
+    "iso",
+    "img",
+    "cab",
+    "gz",
+    "tar"
+  ],
+  "html": [
+    "html",
+    "htm",
+    "shtml",
+    "svg"
+  ]
+}

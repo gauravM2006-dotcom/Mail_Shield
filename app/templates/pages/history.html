@@ -1,0 +1,158 @@
+{% extends "base_app.html" %}
+
+{% block title %}Scan History — Mail Shield{% endblock %}
+{% block header_title %}Scan History{% endblock %}
+{% block header_subtitle %}Review previously analyzed emails and their results.{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="ms-card p-4 border">
+    <!-- Toolbar matching Screen #8 reference -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <!-- View Toggle -->
+        <div class="btn-group btn-group-sm">
+          <button class="btn btn-primary" id="btn-view-scans">All Scans</button>
+          <button class="btn btn-outline-secondary" id="btn-view-batches">Batch Jobs</button>
+        </div>
+
+        <!-- Date Range Input matching Screen #8 -->
+        <div class="d-flex align-items-center gap-2 px-3 py-1 border rounded bg-white" style="font-size: 13px; border-radius: 8px !important;">
+          <i class="bi bi-calendar3 text-muted"></i>
+          <input type="date" class="border-0 bg-transparent" id="history-date-from" style="font-size: 13px; width: 118px; outline:none; color: var(--ms-text);">
+          <span class="text-muted">–</span>
+          <input type="date" class="border-0 bg-transparent" id="history-date-to" style="font-size: 13px; width: 118px; outline:none; color: var(--ms-text);">
+        </div>
+
+        <!-- Search Input -->
+        <div class="input-group input-group-sm" style="width: 220px;">
+          <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control border-start-0 ps-0" id="history-search" placeholder="Filter subject or sender...">
+        </div>
+
+        <!-- Status Filter Chips -->
+        <div class="d-flex gap-1">
+          <button class="ms-inbox-filter-pill active" data-hist-filter="">All</button>
+          <button class="ms-inbox-filter-pill" data-hist-filter="safe" style="color: var(--ms-safe-text);">✓ Safe</button>
+          <button class="ms-inbox-filter-pill" data-hist-filter="suspicious" style="color: var(--ms-suspicious-text);">! Suspicious</button>
+          <button class="ms-inbox-filter-pill" data-hist-filter="spam" style="color: var(--ms-spam-text);">✕ Spam</button>
+        </div>
+
+        <!-- Hidden select kept for JS compatibility -->
+        <select class="d-none" id="history-label-filter">
+          <option value=""></option>
+          <option value="safe">safe</option>
+          <option value="suspicious">suspicious</option>
+          <option value="spam">spam</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons (Export & Clear) -->
+      <div class="d-flex align-items-center gap-2">
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown">
+            <i class="bi bi-download"></i>
+            <span>Export</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: 10px;">
+            <li><a class="dropdown-item small" href="/api/history/export?format=csv"><i class="bi bi-filetype-csv me-2 text-primary"></i> Export as CSV</a></li>
+            <li><a class="dropdown-item small" href="/api/history/export?format=json"><i class="bi bi-filetype-json me-2 text-primary"></i> Export as JSON</a></li>
+          </ul>
+        </div>
+        <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1" id="btn-clear-history">
+          <i class="bi bi-trash"></i>
+          <span>Clear History</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 1. All Scans View -->
+    <div id="view-scans-panel">
+      <div class="table-responsive border rounded" style="background-color: var(--ms-surface);">
+        <table class="ms-table mb-0">
+          <thead>
+            <tr>
+              <th style="width: 155px;">Date &amp; Time</th>
+              <th style="width: 90px;">Mailbox</th>
+              <th style="width: 185px;">Sender</th>
+              <th>Subject</th>
+              <th style="width: 130px;">Verdict &amp; Score</th>
+              <th style="width: 90px;">Triggers</th>
+              <th style="width: 60px;" class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody id="scans-table-body">
+            <!-- Dynamically populated via history.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination row matching Screen #8 -->
+      <div class="d-flex align-items-center justify-content-between mt-3 px-1">
+        <div class="small text-muted" id="history-count-label">Showing records…</div>
+        <div class="d-flex align-items-center gap-1" id="history-pagination">
+          <!-- Dynamically rendered by history.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Batch Jobs View -->
+    <div id="view-batches-panel" class="d-none">
+      <div class="table-responsive border rounded" style="background-color: var(--ms-surface);">
+        <table class="ms-table mb-0">
+          <thead>
+            <tr>
+              <th style="width: 180px;">Started At</th>
+              <th style="width: 120px;">Scope</th>
+              <th style="width: 200px;">Mailboxes</th>
+              <th style="width: 140px;">Total Messages</th>
+              <th>Breakdown</th>
+              <th style="width: 100px;" class="text-end">Status</th>
+            </tr>
+          </thead>
+          <tbody id="batches-table-body">
+            <!-- Dynamically populated via history.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initHistory } from "/static/js/history.js";
+  initHistory();
+
+  // View toggle
+  const btnScans = document.getElementById("btn-view-scans");
+  const btnBatches = document.getElementById("btn-view-batches");
+  const panelScans = document.getElementById("view-scans-panel");
+  const panelBatches = document.getElementById("view-batches-panel");
+
+  btnScans?.addEventListener("click", () => {
+    btnScans.className = "btn btn-primary btn-sm";
+    btnBatches.className = "btn btn-outline-secondary btn-sm";
+    panelScans.classList.remove("d-none");
+    panelBatches.classList.add("d-none");
+  });
+
+  btnBatches?.addEventListener("click", () => {
+    btnBatches.className = "btn btn-primary btn-sm";
+    btnScans.className = "btn btn-outline-secondary btn-sm";
+    panelBatches.classList.remove("d-none");
+    panelScans.classList.add("d-none");
+  });
+
+  // Filter chip toggles
+  document.querySelectorAll("[data-hist-filter]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-hist-filter]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filter = btn.getAttribute("data-hist-filter");
+      const select = document.getElementById("history-label-filter");
+      if (select) { select.value = filter; }
+      initHistory();
+    });
+  });
+</script>
+{% endblock %}

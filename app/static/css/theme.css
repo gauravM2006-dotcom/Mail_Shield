@@ -1,0 +1,92 @@
+/* Theme stylesheet for Mail Shield – light, clean, interactive */
+
+:root {
+  /* Primary accent */
+  --ms-primary: #2A9D8F; /* teal-ish */
+  --ms-primary-light: #E6F9F5;
+  --ms-primary-dark: #1E6E61;
+
+  /* Neutral palette */
+  --ms-bg: #F5F9FC; /* light background */
+  --ms-surface: #FFFFFF;
+  --ms-text: #0F1F3D;
+  --ms-muted: #6C757D;
+
+  /* Status colors */
+  --ms-safe: #059669; /* green */
+  --ms-safe-bg: #E6FBF2;
+  --ms-suspicious: #D97706; /* amber */
+  --ms-suspicious-bg: #FEF7EA;
+  --ms-spam: #DC2626; /* red */
+  --ms-spam-bg: #FEEEEE;
+}
+
+/* Global resets */
+body {
+  background-color: var(--ms-bg);
+  color: var(--ms-text);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Card component */
+.ms-card {
+  background: var(--ms-surface);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid #E2E8F0;
+  padding: 1.5rem;
+}
+
+/* Primary button */
+.btn-primary {
+  background-color: var(--ms-primary);
+  border-color: var(--ms-primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background-color: var(--ms-primary-dark);
+  border-color: var(--ms-primary-dark);
+}
+
+/* Outline primary */
+.btn-outline-primary {
+  color: var(--ms-primary);
+  border-color: var(--ms-primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--ms-primary-light);
+  color: var(--ms-primary-dark);
+}
+
+/* Badge styles */
+.badge-safe { background-color: var(--ms-safe-bg); color: var(--ms-safe); }
+.badge-suspicious { background-color: var(--ms-suspicious-bg); color: var(--ms-suspicious); }
+.badge-spam { background-color: var(--ms-spam-bg); color: var(--ms-spam); }
+
+/* Form inputs */
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #CBD5E0;
+  background: #fff;
+  color: var(--ms-text);
+}
+
+/* Text utilities */
+.text-muted { color: var(--ms-muted) !important; }
+
+/* Table */
+.table thead th { background: #F1F5F9; }
+.table tbody tr:hover { background: var(--ms-primary-light); }
+
+/* Drawer improvements */
+#email-detail-drawer {
+  background: var(--ms-surface);
+  border-left: 1px solid #E2E8F0;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background-color: var(--ms-primary); border-radius: 3px; }

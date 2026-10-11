@@ -1,0 +1,13 @@
+{% extends "base_public.html" %}
+{% block title %}Access Forbidden — Mail Shield{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="py-5">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Mail Shield" class="ms-brand-logo-img mx-auto mb-3" style="width: 58px; height: 58px;">
+    <h1 class="display-3 fw-bold mb-2" style="color: var(--ms-navy); font-family: var(--ms-font-heading);">403</h1>
+    <h4 class="fw-bold mb-2" style="color: var(--ms-navy);">Access Forbidden</h4>
+    <p class="text-muted small mb-4 mx-auto" style="max-width: 380px;">You do not possess the required authentication permissions to access this endpoint.</p>
+    <a href="/" class="btn btn-primary px-4">Return Home</a>
+  </div>
+</div>
+{% endblock %}
