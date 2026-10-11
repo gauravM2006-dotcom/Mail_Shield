@@ -3,7 +3,7 @@ services:
     name: mail-shield
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --worker-class eventlet -w 1 wsgi:app
+    startCommand: gunicorn -w 1 --threads 8 wsgi:app
     envVars:
       - key: FLASK_ENV
         value: production

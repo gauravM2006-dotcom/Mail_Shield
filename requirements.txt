@@ -37,7 +37,7 @@ APScheduler>=3.10.4
 
 # Production Server
 gunicorn>=21.2.0
-eventlet>=0.35.2
+simple-websocket>=1.0.0
 
 # Testing
 pytest>=8.0.0
